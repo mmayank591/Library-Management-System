@@ -12,10 +12,15 @@ import {toast} from "react-toastify";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import AddNewAdmin from "../popups/AddNewAdmin";
+import { toggleAddNewAdminPopup } from "../store/slices/popupSlice";
+import { logout, resetAuthSlice } from "../store/slices/authSlice";
+
+
 
 const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
   const dispatch = useDispatch();
-  //const {} = useSelector((state) => state.popup);
+  const { addNewAdminPopup } = useSelector((state) => state.popup);
 
   const { loading, error, message, isAuthenticated, user } = useSelector(
     (state) => state.auth
@@ -37,6 +42,7 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
   }, [dispatch, isAuthenticated, error, loading, message]);
 
   return (
+    <>
     <aside
         className={`${
           isSideBarOpen ? "left-0" : "-left-full"
@@ -59,7 +65,7 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
           >
             <img src={bookIcon} alt="books" /> <span>Books</span>
           </button>
-          {isAuthenticated && user?.role === "Admin" && (
+          { isAuthenticated && user?.role === "Admin" && (
             <>
               <button
                 onClick={() => setSelectedComponent("Catalog")}
@@ -68,7 +74,7 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
                 <img src={catalogIcon} alt="catalog" /> <span>Catalog</span>
               </button>
               <button
-                //onClick={() => setSelectedComponent("Users")}
+                onClick={() => setSelectedComponent("Users")}
                 className="w-full py-2 font-medium bg-transparent rounded-md hover:cursor-pointer flex items-center space-x-2"
               >
                 <img src={usersIcon} alt="users" /> <span>Users</span>
@@ -79,8 +85,8 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
               >
                 <RiAdminFill className="w-6 h-6" /> <span>Add New Admin</span>
               </button>
-            </>
-          )}
+             </>
+          ) }
           {isAuthenticated && user?.role === "User" && (
             <button
               onClick={() => setSelectedComponent("My Borrowed Books")}
@@ -91,7 +97,7 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
             </button>
           )}
           <button
-            //onClick={() => dispatch(toggleSettingPopup())}
+            onClick={() => dispatch(toggleSettingPopup())}
             className="w-full py-2 font-medium bg-transparent rounded-md hover:cursor-pointer flex items-center space-x-2"
           >
             <img src={settingIcon} alt="setting" />{" "}
@@ -113,7 +119,8 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
           className="h-fit w-fit absolute top-0 right-4 mt-4 block md:hidden"
         />
       </aside>
-      //{addNewAdminPopup && <AddNewAdmin />}
+      {addNewAdminPopup && <AddNewAdmin/> }
+      </>
   );
 };
 
