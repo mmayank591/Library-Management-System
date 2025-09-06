@@ -13,14 +13,15 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import AddNewAdmin from "../popups/AddNewAdmin";
-import { toggleAddNewAdminPopup } from "../store/slices/popupSlice";
+import { toggleAddNewAdminPopup,toggleSettingPopup } from "../store/slices/popupSlice";
 import { logout, resetAuthSlice } from "../store/slices/authSlice";
+import SettingPopup from "../popups/SettingPopup";
 
 
 
 const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
   const dispatch = useDispatch();
-  const { addNewAdminPopup } = useSelector((state) => state.popup);
+  const { addNewAdminPopup,settingPopup } = useSelector((state) => state.popup);
 
   const { loading, error, message, isAuthenticated, user } = useSelector(
     (state) => state.auth
@@ -120,6 +121,7 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
         />
       </aside>
       {addNewAdminPopup && <AddNewAdmin/> }
+      {addNewAdminPopup && <SettingPopup/> }
       </>
   );
 };
